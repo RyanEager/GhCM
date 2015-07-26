@@ -22,8 +22,8 @@ board = [ [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52 ]
 
 @click.command()
 @click.argument('message', nargs=1)
-@click.option('--textColor', default=4, type=click.IntRange(0,4))
-@click.option('--backgroundColor', default=0, type=click.IntRange(0,4))
+@click.option('--textColor', default=4, type=click.IntRange(0,4), help='Changes color of text, 0 = lightest | 4 = darkest.')
+@click.option('--backgroundColor', default=0, type=click.IntRange(0,4), help='Changes color of background, 0 = lightest | 4 = darkest.')
 
 def main(message, textcolor, backgroundcolor):
 	if len(message) > 8:
