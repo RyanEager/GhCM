@@ -17,6 +17,7 @@ Inspired by https://github.com/avinassh/rockstar
 **Requires:**
 
 ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)~~ **Build from [Source](https://github.com/gitpython-developers/GitPython) until 1.0.2 is realeased**
+
 [Click 4.1](http://click.pocoo.org/)
 
 	Usage: GhCM.py [OPTIONS] MESSAGE
