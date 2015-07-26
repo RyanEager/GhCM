@@ -10,7 +10,7 @@ Inspired by https://github.com/avinassh/rockstar
 ![q-x](images/sample3.jpg)
 ![yz](images/sample4.jpg)
 
-#Colors:
+#Colors
 ![colors](images/colors.PNG)
 
 # Usage
