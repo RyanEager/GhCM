@@ -62,9 +62,9 @@ def makeCommits():
 			currentDate = currentDate - timedelta(1)
 
 def createRandomFile():
-	with open('GhCM - ' + sys.argv[1] + '/main.c', 'w') as f:
+	with open('GhCM - ' + sys.argv[1] + '/file.txt', 'w') as f:
 		f.write(str(uuid.uuid1()))
-	return 'main.c'
+	return 'file.txt'
 
 def printBoard():
 	for i in range(7):
