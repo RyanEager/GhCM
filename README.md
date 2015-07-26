@@ -11,7 +11,7 @@ Inspired by https://github.com/avinassh/rockstar
 ![yz](images/sample4.jpg)
 
 # Usage
-Requires: [GitPython 1.0.2](https://github.com/gitpython-developers/GitPython) **Pull from GitHub until 1.0.2 is out**
+Requires: ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)~~ **Pull from GitHub until 1.0.2 is out**
 
     GhCm.py <message>
 
