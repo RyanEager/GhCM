@@ -10,6 +10,9 @@ Inspired by https://github.com/avinassh/rockstar
 ![q-x](images/sample3.jpg)
 ![yz](images/sample4.jpg)
 
+#Colors
+![colors](images/colors.png)
+
 # Usage
 Requires: ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)~~ **Pull from [GitHub](https://github.com/gitpython-developers/GitPython) until 1.0.2 is out**
 
