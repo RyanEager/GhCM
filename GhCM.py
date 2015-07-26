@@ -21,7 +21,15 @@ board = [ [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52 ]
 
 def main():
 	if len(sys.argv) != 2 :
-		print("\nUsage: GhCM.py <message>")
+		print "\nUsage: GhCM.py <message>"
+		sys.exit()
+
+	if len(sys.argv[1]) > 8:
+		print "ERROR: Message too long, must be <= 8 characters"
+		sys.exit()
+
+	if not sys.argv[1].isalpha():
+		print "ERROR: Message must contain only letters"
 		sys.exit()
 
 	offset = 1
@@ -29,7 +37,6 @@ def main():
 		copyLetter(ord(character)  - 97, offset)
 		offset += 6
 	makeCommits()
-	# printBoard()
 
 def copyLetter(position, offset):
 	for i in range(7):
@@ -48,10 +55,10 @@ def makeCommits():
 		for i in range(6, -1, -1):
 			if board[i][j]:
 				for i in range(4):
-					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59), microsecond=randint(0, 999999)))
+					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59), microsecond=randint(0, 999999))).strftime("%Y-%m-%d %H:%M:%S")
 					
 					repo.index.add([createRandomFile()])
-					repo.index.commit(str(uuid.uuid1()), author_date=commit_date.strftime("%Y-%m-%d %H:%M:%S"), commit_date=commit_date.strftime("%Y-%m-%d %H:%M:%S"))
+					repo.index.commit(str(uuid.uuid1()), author_date=commit_date, commit_date=commit_date)
 			currentDate = currentDate - timedelta(1)
 
 def createRandomFile():
