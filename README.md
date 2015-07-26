@@ -16,10 +16,9 @@ Requires: ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)
 	Usage: GhCM.py [OPTIONS] MESSAGE
 
 	Options:
-  	 --textColor INTEGER RANGE       Changes color of text, 0 = lightest | 4 = darkest.
- 	 --backgroundColor INTEGER RANGE
-                                  Changes color of background, 0 = lightest | 4 = darkest.
-  	 --help                          Show this message and exit.
+  	 --textColor INTEGER RANGE          Changes color of text, 0 = lightest | 4 = darkest.
+ 	 --backgroundColor INTEGER RANGE    Changes color of background, 0 = lightest | 4 = darkest.
+  	 --help                             Show this message and exit.
 
 The message should be less than 8 characters, or else it won't fit. GhCM will create a folder called "GhCM - \<Message\>", simply push this folder to a repo on your github and the message will appear. If you want to remove a message simply delete the repo from GitHub.
 
