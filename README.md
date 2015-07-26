@@ -10,14 +10,13 @@ Inspired by https://github.com/avinassh/rockstar
 ![q-x](images/sample3.jpg)
 ![yz](images/sample4.jpg)
 
-#Colors
+#Colors:
 ![colors](images/colors.PNG)
 
 # Usage
 **Requires:**
 
 ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)~~ **Build from [Source](https://github.com/gitpython-developers/GitPython) until 1.0.2 is realeased**
- 
 [Click 4.1](http://click.pocoo.org/)
 
 	Usage: GhCM.py [OPTIONS] MESSAGE
@@ -32,7 +31,7 @@ The message should be less than 8 characters, or else it won't fit. GhCM will cr
 # Issues
  * Waiting on GitPython 1.0.2 to be released for [Feature #317](https://github.com/gitpython-developers/GitPython/pull/317), though the current version on GitHub works.
 
-# To Do:
+# To Do
   * Test if possible to commit to the future
   * Add punctuation
   * Add lower case letters
