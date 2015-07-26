@@ -6,6 +6,7 @@ import uuid
 from datetime import date, datetime, time, timedelta 
 from random import randint
 import git
+import click
 
 letters = [ 
 	[ 0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,1,1 ], 
@@ -19,50 +20,56 @@ letters = [
 
 board = [ [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52 ]
 
-def main():
-	if len(sys.argv) != 2 :
-		print "\nUsage: GhCM.py <message>"
-		sys.exit()
+@click.command()
+@click.argument('message', nargs=1)
+@click.option('--textColor', default=4, type=click.IntRange(0,4))
+@click.option('--backgroundColor', default=0, type=click.IntRange(0,4))
 
-	if len(sys.argv[1]) > 8:
+def main(message, textcolor, backgroundcolor):
+	if len(message) > 8:
 		print "ERROR: Message too long, must be <= 8 characters"
 		sys.exit()
 
-	if not sys.argv[1].isalpha():
+	if not message.isalpha():
 		print "ERROR: Message must contain only letters"
 		sys.exit()
 
 	offset = 1
-	for character in sys.argv[1].lower():
+	for character in message.lower():
 		copyLetter(ord(character)  - 97, offset)
 		offset += 6
-	makeCommits()
+	makeCommits(message, textcolor, backgroundcolor)
 
 def copyLetter(position, offset):
 	for i in range(7):
 		for j in range(5):
 			board[i][j + offset] = letters[i][j + (position * 5)]
 
-def makeCommits():
-	if not os.path.exists("GhCM - " + sys.argv[1]):
-		os.makedirs("GhCM - " + sys.argv[1])
+def makeCommits(message, textColor, backgroundColor):
+	if not os.path.exists("GhCM - " + message):
+		os.makedirs("GhCM - " + message)
 
-	repo = git.Repo.init(os.path.join(os.getcwd(), "GhCM - " + sys.argv[1]))
+	repo = git.Repo.init(os.path.join(os.getcwd(), "GhCM - " + message))
 
 	currentDate = date.today() - timedelta(((date.today().weekday() + 1) % 7) + 1)
 	
 	for j in range(50, -1, -1):
 		for i in range(6, -1, -1):
 			if board[i][j]:
-				for i in range(4):
+				for i in range(textColor):
 					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59), microsecond=randint(0, 999999))).strftime("%Y-%m-%d %H:%M:%S")
-					
-					repo.index.add([createRandomFile()])
+					repo.index.add([createRandomFile(message)])
 					repo.index.commit(str(uuid.uuid1()), author_date=commit_date, commit_date=commit_date)
+			else:
+				for i in range(backgroundColor):
+					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59), microsecond=randint(0, 999999))).strftime("%Y-%m-%d %H:%M:%S")
+					repo.index.add([createRandomFile(message)])
+					repo.index.commit(str(uuid.uuid1()), author_date=commit_date, commit_date=commit_date)
+			
 			currentDate = currentDate - timedelta(1)
 
-def createRandomFile():
-	with open('GhCM - ' + sys.argv[1] + '/file.txt', 'w') as f:
+def createRandomFile(message):
+	with open('GhCM - ' + message + '/file.txt', 'w') as f:
 		f.write(str(uuid.uuid1()))
 	return 'file.txt'
 
@@ -75,5 +82,9 @@ def printBoard():
 			 	print " ",
 		print ""
 
+
+
 if __name__ == '__main__':
 	main()
+
+
