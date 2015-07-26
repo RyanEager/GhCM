@@ -14,7 +14,7 @@ Inspired by https://github.com/avinassh/rockstar
 ![colors](images/colors.PNG)
 
 # Usage
-Requires: ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)~~ **Pull from [GitHub](https://github.com/gitpython-developers/GitPython) until 1.0.2 is out**
+Requires: ~~[GitPython 1.0.2](https://github.com/gitpython-developers/GitPython)~~ **Build from [Source](https://github.com/gitpython-developers/GitPython) until 1.0.2 is realeased**
 
 	Usage: GhCM.py [OPTIONS] MESSAGE
 
