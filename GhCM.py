@@ -40,6 +40,8 @@ def main(message, textcolor, backgroundcolor):
 		offset += 6
 	makeCommits(message, textcolor, backgroundcolor)
 
+	print "\nFinished. Push the folder 'GhCM - " + message + "' to a repo on your GitHub to have your message appear."
+
 def copyLetter(position, offset):
 	for i in range(7):
 		for j in range(5):
