@@ -59,10 +59,11 @@ def main(message, textcolor, backgroundcolor):
 	print "Finished. \nPush the folder 'GhCM - " + message + "' to a repo on your GitHub to have your message appear."
 
 
+
 def copyLetter(position, offset):
-	for col in range(7):
-		for row in range(5):
-			board[col][row + offset] = letters[col][row + (position * 5)]
+	for row in range(7):
+		for col in range(5):
+			board[row][col + offset] = letters[row][col + (position * 5)]
 
 
 def makeCommits(message, textColor, backgroundColor):
@@ -78,12 +79,12 @@ def makeCommits(message, textColor, backgroundColor):
 
 	# make commits for each cell of the board
 	# stepping from bottom right and passing through each col from bottom to top
-	for row in range(50, -1, -1):
-		for col in range(6, -1, -1):
+	for col in range(50, -1, -1):
+		for row in range(6, -1, -1):
 
 			color = backgroundColor
 
-			if board[col][row]:
+			if board[row][col]:
 				color = textColor
 
 			for i in range(color):
@@ -101,9 +102,9 @@ def createRandomFile(message):
 
 
 def printBoard():
-	for i in range(7):
-		for j in range(52):
-			 if board[i][j] == 1:
+	for row in range(7):
+		for col in range(52):
+			 if board[row][col] == 1:
 			 	print 1,
 			 else:
 			 	print " ",
