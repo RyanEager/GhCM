@@ -3,10 +3,13 @@
 import os
 import sys
 import uuid
+
 from datetime import date, datetime, time, timedelta 
 from random import randint
-import git
+
 import click
+import git
+
 
 letters = [ 
 	[ 0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,1,1 ], 
@@ -18,12 +21,22 @@ letters = [
 	[ 1,0,0,0,1,1,1,1,1,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,1,0,0,0,1,1,1,1,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1,1,0,1,1,0,0,0,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,1,1,1,1,1 ]
 ]
 
-board = [ [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52, [0] * 52 ]
+board = [ 
+	[0] * 52, 
+	[0] * 52, 
+	[0] * 52, 
+	[0] * 52, 
+	[0] * 52, 
+	[0] * 52, 
+	[0] * 52 
+]
 
+# set up commandline
 @click.command()
 @click.argument('message', nargs=1)
-@click.option('--textColor', default=4, type=click.IntRange(0,4), help='Changes color of text, 0 = lightest | 4 = darkest.')
+@click.option('--textColor', default=2, type=click.IntRange(0,4), help='Changes color of text, 0 = lightest | 4 = darkest.')
 @click.option('--backgroundColor', default=0, type=click.IntRange(0,4), help='Changes color of background, 0 = lightest | 4 = darkest.')
+
 
 def main(message, textcolor, backgroundcolor):
 	if len(message) > 8:
@@ -34,46 +47,58 @@ def main(message, textcolor, backgroundcolor):
 		print "ERROR: Message must contain only letters"
 		sys.exit()
 
+	print"Creating Repo..."
+
 	offset = 1
 	for character in message.lower():
 		copyLetter(ord(character)  - 97, offset)
 		offset += 6
+
 	makeCommits(message, textcolor, backgroundcolor)
 
-	print "\nFinished. Push the folder 'GhCM - " + message + "' to a repo on your GitHub to have your message appear."
+	print "Finished. \nPush the folder 'GhCM - " + message + "' to a repo on your GitHub to have your message appear."
+
 
 def copyLetter(position, offset):
-	for i in range(7):
-		for j in range(5):
-			board[i][j + offset] = letters[i][j + (position * 5)]
+	for col in range(7):
+		for row in range(5):
+			board[col][row + offset] = letters[col][row + (position * 5)]
+
 
 def makeCommits(message, textColor, backgroundColor):
+	# create folder for the repo
 	if not os.path.exists("GhCM - " + message):
 		os.makedirs("GhCM - " + message)
 
+	# create the repo
 	repo = git.Repo.init(os.path.join(os.getcwd(), "GhCM - " + message))
 
+	# set the start date to the last full col in on the graph
 	currentDate = date.today() - timedelta(((date.today().weekday() + 1) % 7) + 1)
-	
-	for j in range(50, -1, -1):
-		for i in range(6, -1, -1):
-			if board[i][j]:
-				for i in range(textColor):
-					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59), microsecond=randint(0, 999999))).strftime("%Y-%m-%d %H:%M:%S")
-					repo.index.add([createRandomFile(message)])
-					repo.index.commit(str(uuid.uuid1()), author_date=commit_date, commit_date=commit_date)
-			else:
-				for i in range(backgroundColor):
-					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59), microsecond=randint(0, 999999))).strftime("%Y-%m-%d %H:%M:%S")
+
+	# make commits for each cell of the board
+	# stepping from bottom right and passing through each col from bottom to top
+	for row in range(50, -1, -1):
+		for col in range(6, -1, -1):
+
+			color = backgroundColor
+
+			if board[col][row]:
+				color = textColor
+
+			for i in range(color):
+					commit_date = datetime.combine(currentDate, time(hour=randint(0, 23), minute=randint(0, 59), second=randint(0, 59))).strftime("%Y-%m-%d %H:%M:%S")
 					repo.index.add([createRandomFile(message)])
 					repo.index.commit(str(uuid.uuid1()), author_date=commit_date, commit_date=commit_date)
 			
 			currentDate = currentDate - timedelta(1)
 
+
 def createRandomFile(message):
 	with open('GhCM - ' + message + '/file.txt', 'w') as f:
 		f.write(str(uuid.uuid1()))
 	return 'file.txt'
+
 
 def printBoard():
 	for i in range(7):
@@ -85,8 +110,5 @@ def printBoard():
 		print ""
 
 
-
 if __name__ == '__main__':
 	main()
-
-
